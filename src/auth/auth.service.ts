@@ -1,9 +1,10 @@
-import { HttpException, HttpStatus, Injectable } from '@nestjs/common';
+import { HttpException, HttpStatus, Injectable, Res } from '@nestjs/common';
 import { CreateUserDto } from 'src/user/dto/create-user.dto';
 import { User } from 'src/user/user.entity';
 import { JwtService } from '@nestjs/jwt';
 import { UserService } from 'src/user/user.service';
 import { config } from 'dotenv';
+import { Response } from 'express';
 config();
 
 @Injectable()
@@ -13,11 +14,24 @@ export class AuthService {
     private jwtService: JwtService,
   ) {}
 
-  async login(userID: string): Promise<string> {
-    return this.jwtService.sign({ id: userID });
+  async validateUser(login: string, pass: string): Promise<User | null> {
+    const user = await this.userService.findOne(login);
+
+    if (user && user.password === pass) {
+      const { password, ...userData } = user;
+      return userData as User;
+    }
+    return null;
   }
 
-  async register(userDto: CreateUserDto): Promise<any> {
+  async login(userID: string): Promise<string> {
+    const generatedToken = this.jwtService.sign({ id: userID });
+
+
+    return generatedToken;
+  }
+
+  async register(userDto: CreateUserDto): Promise<string> {
     const { login, password } = userDto;
 
     const oldUser = await this.userService.findOne(login);
@@ -36,7 +50,9 @@ export class AuthService {
       user.password = password;
 
       const { id } = await this.userService.registerInDB(user);
-      return this.jwtService.sign({ id });
+      const generatedToken = this.jwtService.sign({ id });
+      
+      return generatedToken;
     } catch (err) {
       return err;
     }

@@ -3,13 +3,15 @@ import { TypeOrmModule } from '@nestjs/typeorm';
 import { User } from './user.entity';
 import { UserService } from './user.service';
 import { JwtModule } from '@nestjs/jwt';
+import { config } from 'dotenv';
+config();
 
 @Module({
   imports: [
     TypeOrmModule.forFeature([User]),
     JwtModule.register({
-      secret: 'secretKey',
-      signOptions: { expiresIn: '60m' },
+      secret: process.env.JWT_SECRET,
+      signOptions: { expiresIn: process.env.JWT_EXPIRES },
     }),
   ],
   providers: [UserService],

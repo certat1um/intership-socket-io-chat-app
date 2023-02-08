@@ -17,7 +17,7 @@ import { Server, Socket } from 'socket.io';
     origin: '*',
   },
 })
-export class AppGateway implements OnGatewayConnection {
+export class AppGateway implements OnGatewayConnection, OnGatewayDisconnect {
   @WebSocketServer()
   server: Server;
 
@@ -31,6 +31,10 @@ export class AppGateway implements OnGatewayConnection {
   }
 
   handleConnection(client: Socket) {
-    console.log(`Connected: (${client.id})`);
+    console.log(`Connected: (${client.id}) on room ${null}`);
+  }
+
+  handleDisconnect(client: Socket) {
+    console.log(`Disconnected: (${client.id})`);
   }
 }

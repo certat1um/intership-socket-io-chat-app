@@ -1,12 +1,14 @@
-import { Module } from '@nestjs/common';
+import { ConfigurableModuleBuilder, Module } from '@nestjs/common';
 import { TypeOrmModule } from '@nestjs/typeorm';
 import { DataSource } from 'typeorm';
 import { AppGateway } from './app.gateway';
 import { AuthModule } from './auth/auth.module';
-import { Room } from './entities/room.entity';
+import { Room } from './rooms/room.entity';
 import { User } from './user/user.entity';
 import { UserModule } from './user/user.module';
+import { ConfigModule } from '@nestjs/config';
 import { config } from 'dotenv';
+import { RoomsModule } from './rooms/rooms.module';
 config();
 
 @Module({
@@ -22,8 +24,10 @@ config();
       synchronize: true,
       logging: true,
     }),
+    ConfigModule.forRoot({ isGlobal: true }),
     UserModule,
     AuthModule,
+    RoomsModule,
   ],
   controllers: [],
   providers: [AppGateway],
