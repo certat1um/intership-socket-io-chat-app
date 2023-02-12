@@ -9,6 +9,7 @@ import { UserModule } from './user/user.module';
 import { ConfigModule } from '@nestjs/config';
 import { config } from 'dotenv';
 import { RoomsModule } from './rooms/rooms.module';
+import { AppController } from './app.controller';
 config();
 
 @Module({
@@ -29,7 +30,7 @@ config();
     AuthModule,
     RoomsModule,
   ],
-  controllers: [],
+  controllers: [AppController],
   providers: [AppGateway],
 })
 export class AppModule {

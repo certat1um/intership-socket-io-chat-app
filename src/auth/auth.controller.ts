@@ -6,10 +6,11 @@ import {
   Post,
   Req,
   Res,
-  Response,
   UseGuards,
 } from '@nestjs/common';
+import { Response } from 'express';
 import { join } from 'path';
+import { createHTMLPagePath } from 'src/helpers/createPath';
 import { CreateUserDto } from 'src/user/dto/create-user.dto';
 import { AuthService } from './auth.service';
 import { LocalAuthGuard } from './guards/local-auth.guard';
@@ -18,24 +19,26 @@ import { LocalAuthGuard } from './guards/local-auth.guard';
 export class AuthController {
   constructor(private authService: AuthService) {}
 
-  @Get(['login', ''])
+  @Get('')
+  async getHomepage(@Res() res) {
+    return res.redirect('login');
+  }
+
+  @Get('login')
   async getLoginPage(@Res() res) {
-    return res.sendFile(join(process.cwd(), 'public/html', 'login.html'));
+    return res.sendFile(createHTMLPagePath('login'));
   }
 
   @Get('register')
   async getRegisterPage(@Res() res) {
-    return res.sendFile(join(process.cwd(), 'public/html', 'register.html'));
+    return res.sendFile(createHTMLPagePath('register'));
   }
 
   @Post('login')
   @UseGuards(LocalAuthGuard)
   @HttpCode(200)
-  async login(@Req() req, @Response() res: Response): Promise<any> {
-    const generatedToken = await this.authService.login(req.user.id);
-    //return res.set('Authorization', `Bearer ${generatedToken}`);
-    
-    //return '1';
+  async login(@Req() req): Promise<string> {
+    return this.authService.login(req.user.id);
   }
 
   @Post('register')

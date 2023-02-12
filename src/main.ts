@@ -9,8 +9,8 @@ async function bootstrap() {
   const app = await NestFactory.create<NestExpressApplication>(AppModule);
 
   app.useStaticAssets(join(__dirname, '..', 'public'));
-  //app.setBaseViewsDir(join(__dirname, '..', 'views'));
-  //app.setViewEngine('ejs');
+  app.setBaseViewsDir(join(__dirname, '..', 'views'));
+  app.setViewEngine('ejs');
 
   await app.listen(process.env.APP_PORT, () => {
     console.log(`App is listening on port ${process.env.APP_PORT}`);
