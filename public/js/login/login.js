@@ -7,28 +7,28 @@ loginBtn.addEventListener('click', async (e) => {
 
   const login = document.querySelector('.login').value.trim();
   const password = document.querySelector('.password').value.trim();
-  
+
   //auth(login, password, 'login');
-  if(!(login && password)) {
+  if (!(login && password)) {
     return 0;
   }
 
   const response = await fetch(`/login`, {
     method: 'POST',
     headers: {
-     'Content-Type': 'application/json',
+      'Content-Type': 'application/json',
     },
     body: JSON.stringify({
-      "login": login,
-      "password": password,
+      login: login,
+      password: password,
     }),
-  }).then(res => res.text());
+  }).then((res) => res.text());
 
-  if(response.indexOf('401') !== -1) {
+  if (response.indexOf('401') !== -1) {
     localStorage.setItem('userToken', null);
     return window.location.replace('/error');
   }
 
   localStorage.setItem('userToken', response);
-  return window.location.replace('/rooms');
+  window.location.replace('/rooms');
 });

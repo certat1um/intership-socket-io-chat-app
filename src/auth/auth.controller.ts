@@ -10,7 +10,7 @@ import {
 } from '@nestjs/common';
 import { Response } from 'express';
 import { join } from 'path';
-import { createHTMLPagePath } from 'src/helpers/createPath';
+import { createEJSViewPath } from 'src/helpers/createPath';
 import { CreateUserDto } from 'src/user/dto/create-user.dto';
 import { AuthService } from './auth.service';
 import { LocalAuthGuard } from './guards/local-auth.guard';
@@ -26,12 +26,12 @@ export class AuthController {
 
   @Get('login')
   async getLoginPage(@Res() res) {
-    return res.sendFile(createHTMLPagePath('login'));
+    return res.render(createEJSViewPath('login'));
   }
 
   @Get('register')
   async getRegisterPage(@Res() res) {
-    return res.sendFile(createHTMLPagePath('register'));
+    return res.render(createEJSViewPath('register'));
   }
 
   @Post('login')

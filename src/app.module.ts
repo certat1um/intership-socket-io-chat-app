@@ -1,15 +1,15 @@
-import { ConfigurableModuleBuilder, Module } from '@nestjs/common';
+import { Module } from '@nestjs/common';
 import { TypeOrmModule } from '@nestjs/typeorm';
 import { DataSource } from 'typeorm';
-import { AppGateway } from './app.gateway';
 import { AuthModule } from './auth/auth.module';
-import { Room } from './rooms/room.entity';
+import { Room } from './room/room.entity';
 import { User } from './user/user.entity';
 import { UserModule } from './user/user.module';
 import { ConfigModule } from '@nestjs/config';
 import { config } from 'dotenv';
-import { RoomsModule } from './rooms/rooms.module';
+import { RoomModule } from './room/room.module';
 import { AppController } from './app.controller';
+import { ChatModule } from './chat/chat.module';
 config();
 
 @Module({
@@ -28,10 +28,10 @@ config();
     ConfigModule.forRoot({ isGlobal: true }),
     UserModule,
     AuthModule,
-    RoomsModule,
+    RoomModule,
+    ChatModule,
   ],
   controllers: [AppController],
-  providers: [AppGateway],
 })
 export class AppModule {
   constructor(private dataSource: DataSource) {}

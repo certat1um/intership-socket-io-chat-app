@@ -104,6 +104,8 @@ a {
 	color: var(--dark-color-b);
 	opacity: 0.7;
 	margin-bottom: 7px;
+	display: flex;
+	justify-content: space-between;
 }
 
 .chat-messages .message .meta span {
