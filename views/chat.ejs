@@ -5,12 +5,12 @@
     <div class="chat-container">
       <header class="chat-header">
         <h1><i class="fas fa-smile"></i> ChatCord</h1>
-        <a href="/" class="btn">Leave Room</a>
+        <button class="leave-room-btn btn">Leave Room</button>
       </header>
       <main class="chat-main">
         <div class="chat-sidebar">
           <h3><i class="fas fa-comments"></i> Room Name:</h3>
-          <h2 id="room-name"><%= room.name %></h2>
+          <h2 id="room-name" data-id="<%= room.id %>"><%= room.name %></h2>
           <h3><i class="fas fa-users"></i> Users</h3>
           <ul id="users">
             <li>Brad</li>
@@ -18,7 +18,7 @@
         </div>
         <div class="chat-messages">
             <div class="message">
-              <p class="meta">Brad <span>9:12pm</span></p>
+              <p class="meta">Brad <span>9:12</span></p>
               <p class="text">
                 Lorem ipsum dolor sit amet consectetur adipisicing elit. Eligendi,
                 repudiandae.
@@ -35,7 +35,7 @@
             required
             autocomplete="off"
           />
-          <button class="sendMessageBtn"><i class="fas fa-paper-plane"></i> Send</button>
+          <button class="sendMessageBtn btn"><i class="fas fa-paper-plane"></i> Send</button>
         </form>
       </div>
     </div>

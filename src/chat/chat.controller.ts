@@ -19,13 +19,14 @@ export class ChatController {
     @Req() req,
   ): Promise<unknown> {
     const room = await this.roomsService.findOneByID(roomData.id);
-    console.log(req.data);
 
     return res.render(createEJSViewPath('chat'), { room });
   }
 
   @Get('userToken/:token')
   async getUserLoginByToken(@Param() params): Promise<string> {
+    console.log(params);
+
     return this.userService.getLoginByToken(params.token);
   }
 }

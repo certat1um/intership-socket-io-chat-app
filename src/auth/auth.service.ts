@@ -25,11 +25,14 @@ export class AuthService {
     return null;
   }
 
-  async login(userID: string): Promise<string> {
-    return this.jwtService.sign({ id: userID });
+  async login(userID: string): Promise<unknown> {
+    return {
+      id: userID,
+      token: this.jwtService.sign({ id: userID }),
+    };
   }
 
-  async register(userDto: CreateUserDto): Promise<string> {
+  async register(userDto: CreateUserDto): Promise<unknown> {
     const { login, password } = userDto;
     const oldUser = await this.userService.findOne(login);
 
@@ -48,7 +51,10 @@ export class AuthService {
       user.password = encryptedPassword;
 
       const { id } = await this.userService.registerInDB(user);
-      return this.jwtService.sign({ id });
+      return {
+        id,
+        token: this.jwtService.sign({ id }),
+      };
     } catch (err) {
       return err;
     }
