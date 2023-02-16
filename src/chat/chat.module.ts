@@ -7,11 +7,18 @@ import { User } from 'src/user/user.entity';
 import { UserService } from 'src/user/user.service';
 import { ChatController } from './chat.controller';
 import { ChatGateway } from './chat.gateway';
-import { Participant } from './entities/participant.entity';
+import { Participant } from './participant/participant.entity';
+import { ParticipantService } from './participant/participant.service';
 
 @Module({
   imports: [TypeOrmModule.forFeature([User, Room, Participant])],
   controllers: [ChatController],
-  providers: [ChatGateway, RoomService, UserService, JwtService],
+  providers: [
+    ChatGateway,
+    ParticipantService,
+    RoomService,
+    UserService,
+    JwtService,
+  ],
 })
 export class ChatModule {}

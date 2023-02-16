@@ -9,7 +9,7 @@ const roomID = document.querySelector('#room-name').dataset.id;
 const socket = io('http://localhost:3000/');
 
 (async () => {
-  const userLogin = await getUserLogin(localStorage.getItem('/userToken'));
+  const userLogin = await getUserLogin(localStorage.getItem('userToken'));
 
   socket.emit('joinRoom', { userLogin, roomID });
 })();

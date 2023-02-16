@@ -10,6 +10,7 @@ import { config } from 'dotenv';
 import { RoomModule } from './room/room.module';
 import { AppController } from './app.controller';
 import { ChatModule } from './chat/chat.module';
+import { Participant } from './chat/participant/participant.entity';
 config();
 
 @Module({
@@ -21,7 +22,7 @@ config();
       username: process.env.USER_NAME,
       password: process.env.USER_PASSWORD || '',
       database: process.env.DB_DATABASE,
-      entities: [User, Room],
+      entities: [User, Room, Participant],
       synchronize: true,
       logging: true,
     }),

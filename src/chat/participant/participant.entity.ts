@@ -8,10 +8,10 @@ export class Participant {
   id: string;
 
   @ManyToOne(() => User, (user) => user.id)
-  user: User;
+  user: string;
 
   @ManyToOne(() => Room, (room) => room.id)
-  room: Room;
+  room: string;
 
   @Column()
   connectionId: string;

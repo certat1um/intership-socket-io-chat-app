@@ -10,16 +10,14 @@ import { OnGatewayInit } from '@nestjs/websockets/interfaces';
 import { Server, Socket } from 'socket.io';
 import { Repository } from 'typeorm';
 import { ChatController } from './chat.controller';
-import { Participant } from './entities/participant.entity';
+import { Participant } from './participant/participant.entity';
+import { ParticipantService } from './participant/participant.service';
 
 @WebSocketGateway()
 export class ChatGateway
   implements OnGatewayConnection, OnGatewayDisconnect, OnGatewayInit
 {
-  constructor(
-    @InjectRepository(Participant)
-    private participantRepository: Repository<Participant>,
-  ) {}
+  constructor(private participantService: ParticipantService) {}
 
   @WebSocketServer()
   server: Server;
@@ -36,25 +34,33 @@ export class ChatGateway
     console.log('Client disconnected.', client.id);
   }
 
-  //@SubscribeMessage('joinRoom')
-  //handleJoinRoom(
-  //  client: Socket,
-  //  data: { userLogin: string; roomID: string },
-  //): void {
-  //  if(Array.from(client.rooms).indexOf(data.roomID) < 0) {
-  //    client.join(data.roomID);
-  //    this.server.to(data.roomID).emit('joinedRoom', data.userLogin);
-  //  }
-  //}
+  @SubscribeMessage('joinRoom')
+  async handleJoinRoom(
+    client: Socket,
+    data: { userLogin: string; roomID: string },
+  ) {
+    if (Array.from(client.rooms).indexOf(data.roomID) < 0) {
+      client.join(data.roomID);
 
-  //@SubscribeMessage('leaveRoom')
-  //handleLeaveRoom(
-  //  client: Socket,
-  //  data: { userLogin: string; roomID: string },
-  //): void {
-  //  client.leave(data.roomID);
-  //  this.server.to(data.roomID).emit('leftRoom', data.userLogin);
-  //}
+      //this.participantService.createAndPostInDB({
+      //  connectionID: client.id,
+      //  ...data,
+      //});
+
+      //this.server.to(data.roomID).emit('joinedRoom', data.userLogin);
+    }
+  }
+
+  @SubscribeMessage('leaveRoom')
+  handleLeaveRoom(
+    client: Socket,
+    data: { userLogin: string; roomID: string },
+  ): void {
+    client.leave(data.roomID);
+    console.log(client.id, 'has left the room', data.roomID);
+
+    //this.server.to(data.roomID).emit('leftRoom', data.userLogin);
+  }
 
   @SubscribeMessage('msgToServer')
   handleMessage(

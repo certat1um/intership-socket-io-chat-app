@@ -20,6 +20,6 @@ registerBtn.addEventListener('click', async (e) => {
     }),
   }).then((res) => res.json());
 
-  localStorage.setItem(`userToken-${response.id}`, response.token);
+  localStorage.setItem('userToken', response.token);
   window.location.replace('/rooms');
 });

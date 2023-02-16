@@ -25,6 +25,6 @@ loginBtn.addEventListener('click', async (e) => {
     return window.location.replace('/error');
   }
 
-  localStorage.setItem(`userToken-${response.id}`, response.token);
+  localStorage.setItem('userToken', response.token);
   window.location.replace('/rooms');
 });

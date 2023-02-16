@@ -25,8 +25,6 @@ export class ChatController {
 
   @Get('userToken/:token')
   async getUserLoginByToken(@Param() params): Promise<string> {
-    console.log(params);
-
     return this.userService.getLoginByToken(params.token);
   }
 }
